@@ -1,0 +1,22 @@
+{
+  "name": "clippy",
+  "version": "1.0.0",
+  "description": "Helps you to get all copied actions",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Exerbaind/clippy.git"
+  },
+  "author": "Dmitriy Shamal",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Exerbaind/clippy/issues"
+  },
+  "homepage": "https://github.com/Exerbaind/clippy#readme",
+  "devDependencies": {
+    "electron": "^22.0.0"
+  }
+}
