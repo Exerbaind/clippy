@@ -4,6 +4,7 @@ const { clipboard } = require('electron');
 const createMenuTemplate = require('./utils/createMenuTemplate');
 
 const isMacOS = process.platform === 'darwin';
+const isWin = process.platform === 'win32';
 
 
 // Создание главного экрана 
@@ -26,7 +27,7 @@ function createMainWindow() {
 app.whenReady().then(() => {
     createMainWindow();
 
-    const menuTemplate = createMenuTemplate(isMacOS);
+    const menuTemplate = createMenuTemplate(isMacOS, isWin);
 
     const mainMenu = Menu.buildFromTemplate(menuTemplate);
     Menu.setApplicationMenu(mainMenu);
