@@ -2,7 +2,7 @@ const path = require('path');
 const { app, BrowserWindow, Menu, globalShortcut } = require('electron');
 const clipboard = require('electron-clipboard-extended')
 const createMenuTemplate = require('./utils/createMenuTemplate');
-const Store = require('electron-store');
+const pushClipboardToStore = require('./utils/storeHandlers/pushClipboardToStore');
 
 const isMacOS = process.platform === 'darwin';
 
@@ -12,6 +12,11 @@ function createMainWindow() {
         title: 'Clippy', // для правильной отрисовки при открытии 
         width: 100000, // во всю ширину экрана
         height: 400,
+        webPreferences: {
+            contextIsolation: true,
+            nodeIntegration: true,
+            preload: path.join(__dirname, 'preload.js'),
+        },
     });
 
     mainWindow.webContents.openDevTools(); // TODO: сделать только для development
@@ -23,7 +28,6 @@ function createMainWindow() {
 // Рендер приложения, когда загрузится 
 app.whenReady().then(() => {
     createMainWindow();
-    const store = new Store();
 
     const menuTemplate = createMenuTemplate(isMacOS);
 
@@ -31,17 +35,12 @@ app.whenReady().then(() => {
     Menu.setApplicationMenu(mainMenu);
 
     // Открытие приложухи по нажатию на сочетание клавиш
-    globalShortcut.register('Shift+Command+V', () => {
-        createMainWindow()
-        store.set('b', 'hello');
-    });
+    globalShortcut.register('Shift+Command+V', createMainWindow);
 
-    // Слежение за изменением буфера обмена при копировании
+    // Слежение за изменением буфера обмена при копировании и запись в store приложения
     clipboard.on('text-changed', () => {
-        let clipboardData = clipboard.readText()
-        console.log(clipboardData);
-        store.delete('b');
-        console.log(store.get('b'));
+        let clipboardData = clipboard.readText();
+        pushClipboardToStore(clipboardData);
     }).startWatching();
 
     app.on('activate', () => {

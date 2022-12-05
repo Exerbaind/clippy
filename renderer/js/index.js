@@ -1,8 +1,8 @@
-function main() {
-    const data = JSON.parse(localStorage.getItem('CLIPBOARD_APP_DATA'));
-
+async function main() {
+    const data = await store.getStore();
+    console.log(data);
     if (Array.isArray(data) && data.length) {
-        return console.log('data is here')
+        return console.log(data)
     }
 
     return console.log('there are no data')
