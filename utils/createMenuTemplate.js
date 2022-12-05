@@ -1,41 +1,48 @@
 const macMenu = [
     {
-      label: 'Clippy',
-      submenu: [
-        {
-            label: 'About'
-        }
-      ]
-    }
-]
-
-const commonMenu = [
-    {
-      role: 'fileMenu'
-    }
-]
-
-const windowsMenu = [
-    {
-        label: 'Help',
+        label: 'Clippy',
         submenu: [
-            {
-                label: 'About'
-            }
+          { role: 'about' },
+          { type: 'separator' },
+          { role: 'services' },
+          { type: 'separator' },
+          { role: 'hide' },
+          { role: 'hideOthers' },
+          { role: 'unhide' },
+          { type: 'separator' },
+          { role: 'quit' }
         ]
     }
 ]
 
-function createMenuTemplate(isMacOS, isWin)  {
+const macFileMenu = [
+    {
+        label: 'File',
+        submenu: [
+            {
+                role: 'close' 
+            } 
+        ]
+    }
+]
+
+const commonFileMenu = [
+    {
+        label: 'File',
+        submenu: [
+            {
+                role: 'quit' 
+            } 
+        ]
+    }
+]
+
+function createMenuTemplate(isMacOS)  {
     if (isMacOS) {
-        return [...macMenu, ...commonMenu];
+        return [...macMenu, ...macFileMenu];
     }
 
-    if (isWin) {
-        return [...commonMenu, windowsMenu];
-    }
-
-    return [...commonMenu]
+    return [...commonFileMenu]
 }
 
 module.exports = createMenuTemplate;
