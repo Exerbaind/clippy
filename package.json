@@ -4,7 +4,7 @@
   "description": "Helps you to get all copied actions",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "set NODE_ENV=development && electron ."
   },
   "repository": {
     "type": "git",
