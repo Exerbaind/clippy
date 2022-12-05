@@ -6,22 +6,29 @@ const pushClipboardToStore = require('./utils/storeHandlers/pushClipboardToStore
 
 const isMacOS = process.platform === 'darwin';
 
+let mainWindow;
+
 // Создание главного экрана 
 function createMainWindow() {
-    const mainWindow = new BrowserWindow({
+    mainWindow = new BrowserWindow({
         title: 'Clippy', // для правильной отрисовки при открытии 
         width: 100000, // во всю ширину экрана
-        height: 400,
+        height: 300,
         webPreferences: {
             contextIsolation: true,
             nodeIntegration: true,
             preload: path.join(__dirname, 'preload.js'),
         },
+        frame: false,
+        opacity: 0.9,
+        backgroundColor: "black",
+        x: 0, 
+        y: 100000,
     });
 
-    mainWindow.webContents.openDevTools(); // TODO: сделать только для development
+    // mainWindow.webContents.openDevTools(); // TODO: сделать только для development
 
-    mainWindow.loadFile(path.join(__dirname, './renderer/index.html'));
+    mainWindow.loadFile(path.join(__dirname, './renderer/main.html'));
 }
 
 
@@ -34,8 +41,19 @@ app.whenReady().then(() => {
     const mainMenu = Menu.buildFromTemplate(menuTemplate);
     Menu.setApplicationMenu(mainMenu);
 
+    // TODO: пофиксить скрытие и показ приложения, сейчас жопа какая-т 
     // Открытие приложухи по нажатию на сочетание клавиш
-    globalShortcut.register('Shift+Command+V', createMainWindow);
+    // globalShortcut.register('Shift+Command+V', () => {
+        // if (BrowserWindow.getAllWindows().length === 1) {
+        //     // app.show();
+        //     // app.focus();
+        // }
+    // });
+
+    // globalShortcut.register('Escape', () => {
+    //     console.log(BrowserWindow.getAllWindows().length);
+    //     app.hide();
+    // });
 
     // Слежение за изменением буфера обмена при копировании и запись в store приложения
     clipboard.on('text-changed', () => {
@@ -43,7 +61,10 @@ app.whenReady().then(() => {
         pushClipboardToStore(clipboardData);
     }).startWatching();
 
+    mainWindow.on('closed', () => mainWindow = null);
+
     app.on('activate', () => {
+        console.log('active');
         if (BrowserWindow.getAllWindows().length === 0) createMainWindow()
     })
 });
