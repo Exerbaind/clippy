@@ -4,13 +4,24 @@ const fs = require('fs');
 function pushClipboardToStore(clipboard) {
     try {
         const storeDataJSON = fs.readFileSync("store.json", "utf8") || null;
-        const clipboardItem = {
-            id: uuidv4(),
-            data: clipboard,
+        const isExistingClipboard = clipboard && clipboard.id;
+        let clipboardItem;
+
+        if (isExistingClipboard) {
+            clipboardItem = {
+                id: clipboard.id,
+                data: clipboard.data,
+            }
+        } else {
+            clipboardItem = {
+                id: uuidv4(),
+                data: clipboard,
+            }
         }
+      
         if (storeDataJSON) {
             const storeData = JSON.parse(storeDataJSON);
-            const newStoreData = [...storeData, clipboardItem];
+            const newStoreData = [clipboardItem, ...storeData];
             fs.writeFileSync('store.json', JSON.stringify(newStoreData))
         } else {
             const newStoreData = [clipboardItem];

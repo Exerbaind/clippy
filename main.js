@@ -1,5 +1,5 @@
 const path = require('path');
-const { app, BrowserWindow, Menu, globalShortcut } = require('electron');
+const { app, BrowserWindow, Menu } = require('electron');
 const clipboard = require('electron-clipboard-extended')
 const createMenuTemplate = require('./utils/createMenuTemplate');
 const pushClipboardToStore = require('./utils/storeHandlers/pushClipboardToStore');
@@ -20,13 +20,12 @@ function createMainWindow() {
             preload: path.join(__dirname, 'preload.js'),
         },
         frame: false,
-        opacity: 0.9,
-        backgroundColor: "black",
+        backgroundColor: "#212121",
         x: 0, 
         y: 100000,
     });
 
-    // mainWindow.webContents.openDevTools(); // TODO: сделать только для development
+    mainWindow.webContents.openDevTools(); // TODO: сделать только для development
 
     mainWindow.loadFile(path.join(__dirname, './renderer/main.html'));
 }
@@ -64,7 +63,6 @@ app.whenReady().then(() => {
     mainWindow.on('closed', () => mainWindow = null);
 
     app.on('activate', () => {
-        console.log('active');
         if (BrowserWindow.getAllWindows().length === 0) createMainWindow()
     })
 });

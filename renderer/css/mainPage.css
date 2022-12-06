@@ -3,3 +3,65 @@
     margin: 0;
     padding: 0;
 }
+
+.main {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 300px;
+    width: 100%;
+    padding: 16px 0;
+}
+
+.main-title {
+    font-size: 20px;
+    color: white;
+    text-align: center;
+}
+
+.container {
+    height: 230px;
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 16px;
+    padding: 0 16px;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+      
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+.clipboard {
+    flex: 0 0 auto;
+    height: 100%;
+    width: 300px;
+    background-color: white;
+    border-radius: 8px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.clipboard-type-container {
+    padding: 12px;
+}
+
+.clipboard-type-text {
+    color: white;
+    font-weight: 500;
+    font-size: 18px;
+}
+
+.clipboard-content {
+    height: fit-content;
+    padding: 12px;
+}
+
+.clipboard-content-data {
+    font-size: 16px;
+    line-height: 24px;
+    color: black;
+}
