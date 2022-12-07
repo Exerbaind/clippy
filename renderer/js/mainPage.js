@@ -1,7 +1,22 @@
 const clipboardContainer = document.querySelector('.container');
+let activeClipboardID = null;
+
+function handleActive(id) {
+    if (activeClipboardID) {
+        const currentActiveClipboard = document.getElementById(activeClipboardID);
+        currentActiveClipboard.classList.remove('clipboard_active');
+    }
+
+    const activeClipboard = document.getElementById(id);
+    activeClipboard.classList.add('clipboard_active');
+
+    activeClipboardID = id;
+}
 
 async function handleClick(item) {
     const { id, data } = item;
+
+    if (activeClipboardID !== id) return handleActive(id);
 
     await navigator.clipboard.writeText(data);
     await store.setStore(item);

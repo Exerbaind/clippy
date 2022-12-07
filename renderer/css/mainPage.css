@@ -43,6 +43,12 @@
     border-radius: 8px;
     overflow-y: auto;
     overflow-x: hidden;
+    transition: .3s;
+}
+
+.clipboard_active {
+    border: 2px solid #76FF03;
+    transform: scale(0.98);
 }
 
 .clipboard-type-container {
