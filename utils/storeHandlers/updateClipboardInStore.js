@@ -8,11 +8,8 @@ function updateClipboardInStore(clipboard) {
         const storeData = JSON.parse(storeDataJSON);
 
         const dataWithoutCurrentClipboard = storeData.filter((item) => item.id !== clipboard.id);
-        console.log(dataWithoutCurrentClipboard);
 
         const newStoreData = [currentClipboard, ...dataWithoutCurrentClipboard];
-
-        console.log(newStoreData);
 
         fs.writeFileSync('store.json', JSON.stringify(newStoreData))
     } catch(error) {

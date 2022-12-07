@@ -21,6 +21,7 @@ async function handleClick(item) {
 
     await navigator.clipboard.writeText(data);
     await store.updateStore(item);
+    activeClipboardID = null;
 }
 
 function renderClipboard(item) {
