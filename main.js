@@ -57,6 +57,8 @@ app.whenReady().then(() => {
     // Слежение за изменением буфера обмена при копировании и запись в store приложения
     clipboard.on('text-changed', () => {
         let clipboardData = clipboard.readText();
+        // сравнить есть ли уэе в сторе такое значение, если есть то обновить, если нет, то записать
+        console.log('changed')
         pushClipboardToStore(clipboardData);
     }).startWatching();
 

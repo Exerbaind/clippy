@@ -1,4 +1,5 @@
 const clipboardContainer = document.querySelector('.container');
+let currentRenderedData = null;
 let activeClipboardID = null;
 
 function handleActive(id) {
@@ -19,7 +20,7 @@ async function handleClick(item) {
     if (activeClipboardID !== id) return handleActive(id);
 
     await navigator.clipboard.writeText(data);
-    await store.setStore(item);
+    await store.updateStore(item);
 }
 
 function renderClipboard(item) {
@@ -56,12 +57,19 @@ function renderClipboard(item) {
 }
 
 async function main() {
-    const data = await store.getStore();
-    if (Array.isArray(data) && data.length) {
-        return data.forEach(renderClipboard);
+    try {
+        const data = await store.getStore();
+        const isDataChanged = JSON.stringify(data) !== JSON.stringify(currentRenderedData);
+        if (data && Array.isArray(data) && data.length && isDataChanged) {
+            currentRenderedData = data;
+            clipboardContainer.textContent = '';
+            return data.forEach(renderClipboard);
+        }
+    
+        return console.log('there are no data')
+    } catch (error) {
+        console.error(error);
     }
-
-    return console.log('there are no data')
 }
 
-main();
+setInterval(main, 100);
